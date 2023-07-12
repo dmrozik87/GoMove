@@ -25,4 +25,16 @@ public class Activity {
     private List<UUID> participants;
     private String activityPhotoUrl;
     private List<UUID> comments;
+
+    public Activity(ActivityType activityType, UUID owner, String title, String city, String street, LocalDate date, LocalTime time, String description) {
+        this.activityId = UUID.randomUUID();
+        this.activityType = activityType;
+        this.owner = owner;
+        this.title = title;
+        this.city = city;
+        this.street = street;
+        this.date = date;
+        this.time = time;
+        this.description = description;
+    }
 }
