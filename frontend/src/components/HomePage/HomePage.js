@@ -14,6 +14,16 @@ function HomePage() {
 
     const loggedUserId = localStorage.getItem("userId");
 
+
+
+    const filteredActivities = activities.filter(activity => {
+        const participantIds = activity.participants.map(participant => participant.userId);
+        return !participantIds.includes(loggedUserId);
+    });
+
+
+    console.log(filteredActivities)
+
     const fetchActivities = async () => {
         try {
             const response = await fetch('http://localhost:8080/activities/future');
@@ -66,7 +76,7 @@ function HomePage() {
             </div>
             <div className='card-activity'>
                 {activities.length > 0 ? (
-                    <ActivityCard activity={activities[currentActivityIndex]}/>
+                    <ActivityCard activity={filteredActivities[currentActivityIndex]}/>
                 ) : (
                     <p>Pobieranie aktywności...</p>
                 )}

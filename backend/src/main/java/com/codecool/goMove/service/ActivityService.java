@@ -4,13 +4,12 @@ import com.codecool.goMove.model.Activity;
 import com.codecool.goMove.model.ActivityType;
 import com.codecool.goMove.model.User;
 import com.codecool.goMove.repository.ActivityRepository;
+import com.codecool.goMove.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.util.Objects.isNull;
@@ -20,8 +19,13 @@ public class ActivityService {
 
     private final ActivityRepository activityRepository;
 
-    public ActivityService(ActivityRepository activityRepository) {
+    private final UserService userService;
+
+    public ActivityService(ActivityRepository activityRepository,
+                           UserService userService
+    ) {
         this.activityRepository = activityRepository;
+        this.userService = userService;
     }
 
     public List<Activity> getAllActivities() {
@@ -70,7 +74,9 @@ public class ActivityService {
         LocalTime now = LocalTime.now();
         if (activity.getDate().isAfter(today)
                 || activity.getDate().equals(today) && activity.getTime().isAfter(now)) {
+
             activityRepository.save(activity);
+            userService.enrollUser(activity.getOwner().getUserId(), activity.getActivityId());
             return true;
         }
         return false;

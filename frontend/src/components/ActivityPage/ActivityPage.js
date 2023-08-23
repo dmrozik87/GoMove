@@ -8,8 +8,7 @@ function ActivityPage() {
     const [activityData, setActivityData] = useState("");
 
 
-    const activityId = '1111e4ee-06f5-40ab-935e-442074f939a1'
-
+    const activityId = '182ebeab-a2db-4dfe-864a-1c358b697060'
 
     useEffect(() => {
         const fetchActivityData = async () => {
