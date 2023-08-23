@@ -12,20 +12,41 @@ function HomePage() {
 
     const [activities, setActivities] = useState([]);
     const [currentActivityIndex, setCurrentActivityIndex] = useState(0);
+    const [loggedUser, setLoggedUser] = useState(null);
 
     const loggedUserId = localStorage.getItem("userId");
 
-    console.log(currentActivityIndex)
 
-    function filterActivities(activities) {
+    const fetchLoggedUser = async () => {
+        try {
+            const response = await fetch(`http://localhost:8080/users/${loggedUserId}`, {
+                headers: {
+                    "Authorization": localStorage.getItem("jwt"),
+                    'Content-Type': 'application/json'
+                }
+            });
+            const data = await response.json();
+            setLoggedUser(data);
+        } catch (error) {
+            console.error('Failed to fetch user:', error);
+        }
+    };
+
+
+ function filterActivities(activities) {
         const filteredActivities = activities.filter(activity => {
             const participantIds = activity.participants.map(participant => participant.userId);
-            return !participantIds.includes(loggedUserId);
+            const isUserEnrolled = participantIds.includes(loggedUserId);
+
+            const isMatchingCity = activity.city === loggedUser.city
+            const isMatchingActivityType = activity.activityType === loggedUser.preferredActivity;
+
+            return !isUserEnrolled && isMatchingCity && isMatchingActivityType;
         });
-        console.log(filteredActivities)
+
+        console.log("filtered" + filteredActivities);
         return filteredActivities;
     }
-
 
     const fetchActivities = async () => {
         try {
@@ -33,6 +54,8 @@ function HomePage() {
             const data = await response.json();
             setActivities(filterActivities(data));
             setCurrentActivityIndex(0);
+            console.log(data)
+            console.log(activities)
         } catch (error) {
             console.error('Błąd podczas pobierania aktywności:', error);
         }
@@ -44,13 +67,20 @@ function HomePage() {
         } else {
             alert('Nie ma więcej aktywności. Chcesz wrócić do pierwszej?');
             fetchActivities();
-            //setCurrentActivityIndex(0);
         }
     };
 
-    useEffect(() => {
-        fetchActivities();
-    }, []);
+
+
+       useEffect(() => {
+            fetchLoggedUser();
+        }, []);
+
+        useEffect(() => {
+            if (loggedUser !== null) {
+                fetchActivities();
+            }
+        }, [loggedUser]);
 
 
     const enrollUserToActivity = () => {
