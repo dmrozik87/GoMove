@@ -43,3 +43,16 @@
     transform: scale(1.2);
     transition: transform .2s;
 }
+
+
+.home-page .go-to-search {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: lightgreen;
+    color: #2a2a2a;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: transform .4s ease;
+}
