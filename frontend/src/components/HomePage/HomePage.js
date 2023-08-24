@@ -18,22 +18,27 @@ function HomePage() {
 
 
     const fetchLoggedUser = async () => {
-        try {
-            const response = await fetch(`http://localhost:8080/users/${loggedUserId}`, {
-                headers: {
-                    "Authorization": localStorage.getItem("jwt"),
-                    'Content-Type': 'application/json'
-                }
-            });
-            const data = await response.json();
-            setLoggedUser(data);
-        } catch (error) {
-            console.error('Failed to fetch user:', error);
+        console.log(isUserLogged)
+        if (isUserLogged) {
+            try {
+                const response = await fetch(`http://localhost:8080/users/${loggedUserId}`, {
+                    headers: {
+                        "Authorization": localStorage.getItem("jwt"),
+                        'Content-Type': 'application/json'
+                    }
+                });
+                const data = await response.json();
+                setLoggedUser(data);
+            } catch (error) {
+                console.error('Failed to fetch user:', error);
+            }
+        } else {
+            console.log("User not logged.")
         }
     };
 
 
- function filterActivities(activities) {
+    function filterActivities(activities) {
         const filteredActivities = activities.filter(activity => {
             const participantIds = activity.participants.map(participant => participant.userId);
             const isUserEnrolled = participantIds.includes(loggedUserId);
@@ -52,10 +57,12 @@ function HomePage() {
         try {
             const response = await fetch('http://localhost:8080/activities/future');
             const data = await response.json();
-            setActivities(filterActivities(data));
+            if (isUserLogged) {
+                setActivities(filterActivities(data));
+            } else {
+                setActivities(data);
+            }
             setCurrentActivityIndex(0);
-            console.log(data)
-            console.log(activities)
         } catch (error) {
             console.error('Błąd podczas pobierania aktywności:', error);
         }
@@ -71,16 +78,25 @@ function HomePage() {
     };
 
 
+    useEffect(() => {
+        const fetchData = async () => {
+            await fetchLoggedUser();
 
-       useEffect(() => {
-            fetchLoggedUser();
-        }, []);
+            await fetchActivities();
 
-        useEffect(() => {
+        };
+        fetchData();
+    }, []);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            await fetchLoggedUser();
             if (loggedUser !== null) {
-                fetchActivities();
+                await fetchActivities();
             }
-        }, [loggedUser]);
+        };
+        fetchData();
+    }, [isUserLogged]);
 
 
     const enrollUserToActivity = () => {
