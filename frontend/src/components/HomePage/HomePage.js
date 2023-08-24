@@ -81,12 +81,11 @@ function HomePage() {
     useEffect(() => {
         const fetchData = async () => {
             await fetchLoggedUser();
-
             await fetchActivities();
-
         };
         fetchData();
     }, []);
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -98,6 +97,13 @@ function HomePage() {
         fetchData();
     }, [isUserLogged]);
 
+
+
+    useEffect(() => {
+        if (loggedUser !== null) {
+            fetchActivities();
+        }
+    }, [loggedUser]);
 
     const enrollUserToActivity = () => {
         fetch(`http://localhost:8080/users/enroll/${loggedUserId}/${activities[currentActivityIndex].activityId}`, {
