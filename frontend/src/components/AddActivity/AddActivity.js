@@ -61,6 +61,20 @@ const AddActivity = () => {
 
     function handleSubmit(e) {
         e.preventDefault();
+
+
+        if(activityType === ""){
+            alert("Choose correct activity type.")
+            return;
+        }
+
+
+        if (selectedAddress === "") {
+            alert("Choose correct address.");
+            return;
+        }
+
+
         const activityId = UUID();
         fetch("http://localhost:8080/activities", {
             headers: {Authorization: localStorage.getItem("jwt"), "Content-Type": "application/json"},
@@ -204,7 +218,7 @@ const AddActivity = () => {
             {selectedAddress ?
                 <div className="google-maps">
                     <p>Selected Address: {selectedAddress}</p>
-                    <GoogleMapComponent height={'400px'} width={'1020px'} address={selectedAddress}/> </div> : <></>}
+                    <GoogleMapComponent height={'400px'} width={'1020px'} address={selectedAddress}/></div> : <></>}
         </div>
     ) : <></>;
 };
