@@ -13,7 +13,20 @@
 
 ## Demo 🎥
 
----
+### Homepage
+![homepage](https://github.com/CodecoolGlobal/el-proyecte-grande-sprint-1-java-dmrozik87/assets/116550191/026410b8-d819-4019-bafc-1e59534c44c3)
+
+### Search
+![search](https://github.com/CodecoolGlobal/el-proyecte-grande-sprint-1-java-dmrozik87/assets/116550191/0f7b857a-dc6f-4e05-99c8-8b06246806f9)
+
+### Activity Page
+![activitypage](https://github.com/CodecoolGlobal/el-proyecte-grande-sprint-1-java-dmrozik87/assets/116550191/b25e7370-034d-48f8-9fa9-4c21d2e5bda3)
+
+### Add Activity Page
+![addactivity](https://github.com/CodecoolGlobal/el-proyecte-grande-sprint-1-java-dmrozik87/assets/116550191/8284776e-3d19-4589-beb1-7570481f3813)
+
+### Profile
+![profile](https://github.com/CodecoolGlobal/el-proyecte-grande-sprint-1-java-dmrozik87/assets/116550191/83e0ee57-f05d-44c3-9d7b-2d3c4217e9f1)
 
 ## Description 📚
 
